@@ -107,6 +107,94 @@ const CONNECT_REGIONS = [
   { region: "Switzerland", canPayTo: "US, UK, EEA, Canada, Switzerland" },
 ]
 
+// USDC Connect Payouts - KR32 countries list
+const USDC_CONNECT_RECIPIENT_COUNTRIES = [
+  "Andorra",
+  "Angola",
+  "Anguilla",
+  "Antigua and Barbuda",
+  "Argentina",
+  "Armenia",
+  "Azerbaijan",
+  "Bahamas",
+  "Bahrain",
+  "Belize",
+  "Bermuda",
+  "Bhutan",
+  "Bolivia",
+  "Bosnia and Herzegovina",
+  "Botswana",
+  "Brunei",
+  "Cabo Verde",
+  "Chile",
+  "Colombia",
+  "Comoros",
+  "Cook Islands",
+  "Costa Rica",
+  "Djibouti",
+  "Dominica",
+  "Dominican Republic",
+  "East Timor (Timor-Leste)",
+  "Ecuador",
+  "Equatorial Guinea",
+  "Eswatini",
+  "Fiji",
+  "Gabon",
+  "Gambia",
+  "Guatemala",
+  "Guernsey",
+  "Guinea",
+  "Guyana",
+  "Honduras",
+  "Isle of Man",
+  "Jersey",
+  "Kazakhstan",
+  "Kiribati",
+  "Kyrgyzstan",
+  "Lesotho",
+  "Liberia",
+  "Madagascar",
+  "Malawi",
+  "Maldives",
+  "Marshall Islands",
+  "Mauritania",
+  "Mauritius",
+  "Micronesia",
+  "Mongolia",
+  "Montenegro",
+  "Montserrat",
+  "Nauru",
+  "Oman",
+  "Palau",
+  "Pakistan",
+  "Papua New Guinea",
+  "Paraguay",
+  "Peru",
+  "Philippines",
+  "Qatar",
+  "Saint Kitts and Nevis",
+  "Saint Lucia",
+  "Saint Vincent and the Grenadines",
+  "Samoa",
+  "San Marino",
+  "Sao Tome and Principe",
+  "Saudi Arabia",
+  "Serbia",
+  "Seychelles",
+  "Sierra Leone",
+  "Solomon Islands",
+  "Sri Lanka",
+  "Suriname",
+  "Tajikistan",
+  "Togo",
+  "Tonga",
+  "Turkmenistan",
+  "Tuvalu",
+  "Uruguay",
+  "Vatican City (Holy See)",
+  "Zambia",
+]
+
 export default function IntegrationDetails({ type }: IntegrationDetailsProps) {
   const [showCountries, setShowCountries] = useState(false)
   const [showPricing, setShowPricing] = useState(false)
@@ -115,6 +203,7 @@ export default function IntegrationDetails({ type }: IntegrationDetailsProps) {
   const [showDirectStablecoins, setShowDirectStablecoins] = useState(false)
   const [showExemptions, setShowExemptions] = useState(false)
   const [showLegacyStablecoin, setShowLegacyStablecoin] = useState(false)
+  const [showUSDCConnect, setShowUSDCConnect] = useState(false)
 
   if (type === "global-payouts") {
     return (
@@ -765,6 +854,113 @@ export default function IntegrationDetails({ type }: IntegrationDetailsProps) {
               className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300"
             >
               View charge types documentation <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+        )}
+      </div>
+
+      {/* USDC Connect Payouts - Coming Soon */}
+      <div className="bg-gradient-to-br from-purple-900/30 to-blue-900/30 border border-purple-500/30 rounded-lg overflow-hidden">
+        <button
+          onClick={() => setShowUSDCConnect(!showUSDCConnect)}
+          className="w-full flex items-center justify-between p-4 text-left hover:bg-purple-700/10 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <Sparkles className="w-5 h-5 text-purple-400" />
+            <div>
+              <div className="flex items-center gap-2">
+                <h4 className="font-semibold text-white">USDC Connect Payouts</h4>
+                <span className="px-2 py-0.5 bg-purple-600/50 text-purple-200 text-xs font-medium rounded">
+                  Coming Soon
+                </span>
+              </div>
+              <p className="text-sm text-slate-400">Pay out in USDC from US / EU platforms to global connected accounts</p>
+            </div>
+          </div>
+          {showUSDCConnect ? (
+            <ChevronUp className="w-5 h-5 text-slate-400" />
+          ) : (
+            <ChevronDown className="w-5 h-5 text-slate-400" />
+          )}
+        </button>
+        {showUSDCConnect && (
+          <div className="border-t border-purple-500/30 p-4 space-y-4">
+            <div className="p-3 bg-purple-950/30 border border-purple-800/50 rounded-lg">
+              <p className="text-sm text-purple-200">
+                <strong>Platform Countries:</strong> United States and European Union
+              </p>
+              <p className="text-sm text-purple-200 mt-1">
+                <strong>Recipient Countries:</strong> 84 countries globally (see list below)
+              </p>
+            </div>
+
+            <div>
+              <h5 className="text-sm font-semibold text-slate-300 mb-2">Supported Recipient Countries ({USDC_CONNECT_RECIPIENT_COUNTRIES.length})</h5>
+              <div className="max-h-64 overflow-y-auto bg-slate-900/50 rounded-lg p-3">
+                <div className="flex flex-wrap gap-2">
+                  {USDC_CONNECT_RECIPIENT_COUNTRIES.map((country) => (
+                    <span
+                      key={country}
+                      className="px-2 py-1 bg-purple-950/50 border border-purple-800/50 text-purple-300 text-xs rounded"
+                    >
+                      {country}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h5 className="text-sm font-semibold text-slate-300 mb-2">Prohibited Destinations (OFAC Sanctioned)</h5>
+              <div className="flex flex-wrap gap-2">
+                {PROHIBITED_COUNTRIES.map((country) => (
+                  <span
+                    key={country}
+                    className="px-2 py-1 bg-red-950/50 border border-red-800/50 text-red-300 text-xs rounded"
+                  >
+                    {country}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h5 className="text-sm font-semibold text-slate-300 mb-2">US Regional Exclusions</h5>
+              <div className="flex flex-wrap gap-2">
+                {US_EXCLUDED_REGIONS.map((region) => (
+                  <span
+                    key={region}
+                    className="px-2 py-1 bg-amber-950/50 border border-amber-800/50 text-amber-300 text-xs rounded"
+                  >
+                    {region}
+                  </span>
+                ))}
+              </div>
+              <p className="text-xs text-slate-500 mt-2">
+                Businesses with principal residential or operating addresses in New York are excluded.
+              </p>
+            </div>
+
+            <div>
+              <h5 className="text-sm font-semibold text-slate-300 mb-2">Pricing</h5>
+              <div className="p-3 bg-slate-900/50 rounded-lg">
+                <span className="text-slate-400 italic">TBD - Pricing to be announced</span>
+              </div>
+            </div>
+
+            <div className="p-3 bg-blue-950/30 border border-blue-800/50 rounded-lg">
+              <p className="text-sm text-blue-200">
+                <strong>How it works:</strong> US/EU platforms can onboard connected accounts in the supported countries and transfer funds in USDC using Connect's cross-border payout capabilities.
+              </p>
+            </div>
+
+            <a
+              href="https://docs.stripe.com/connect/cross-border-payouts"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300"
+            >
+              View Connect cross-border docs <ExternalLink className="w-3 h-3" />
             </a>
           </div>
         )}
