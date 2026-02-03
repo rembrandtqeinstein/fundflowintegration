@@ -401,6 +401,7 @@ export default function Home() {
 
   const [showRecommendation, setShowRecommendation] = useState(false)
   const [showConflictWarning, setShowConflictWarning] = useState(false)
+  const [userType, setUserType] = useState<"marketplace" | "fintech" | null>(null)
 
   const handleAnswer = (questionId: string, value: boolean | string | string[]) => {
     setAnswers((prev) => {
@@ -459,6 +460,37 @@ export default function Home() {
     })
     setShowRecommendation(false)
     setShowConflictWarning(false)
+    setUserType(null)
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  const handleConnectRecommendation = () => {
+    // Set answers that lead to Connect recommendation
+    setAnswers({
+      question1: false, // Not paying own funds
+      question2: true, // International payouts
+      question3: true, // Stay out of flow of funds
+      question4: false, // Fast integration (not required)
+      question5: false, // Not merchant of record
+      question6: "United States",
+      question7: ["United States", "Canada"],
+    })
+    setShowRecommendation(true)
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  const handleGlobalPayoutsRecommendation = () => {
+    // Set answers that lead to Global Payouts recommendation
+    setAnswers({
+      question1: true, // Paying own funds
+      question2: true, // International payouts
+      question3: false, // Not staying out of flow of funds
+      question4: true, // Fast integration
+      question5: true, // Merchant of record
+      question6: "United States",
+      question7: ["EMEA", "APAC"],
+    })
+    setShowRecommendation(true)
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
@@ -483,6 +515,83 @@ export default function Home() {
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="space-y-8">
+          {/* Quick User Type Selection */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-white text-center">Not sure where to start?</h2>
+            <p className="text-slate-400 text-center text-sm">Select your business type for a quick recommendation</p>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {/* Marketplace User */}
+              <button
+                onClick={() => setUserType(userType === "marketplace" ? null : "marketplace")}
+                className={`relative p-6 rounded-xl border-2 transition-all duration-200 text-left ${
+                  userType === "marketplace"
+                    ? "border-blue-500 bg-blue-950/30"
+                    : "border-slate-700 bg-slate-800/50 hover:border-slate-600"
+                }`}
+              >
+                <h3 className="text-lg font-semibold text-white mb-2">Marketplace User</h3>
+                <p className="text-slate-400 text-sm">
+                  Multi-party platforms connecting buyers and sellers, service providers, or creators
+                </p>
+              </button>
+
+              {/* FinTech/SaaS User */}
+              <button
+                onClick={() => setUserType(userType === "fintech" ? null : "fintech")}
+                className={`relative p-6 rounded-xl border-2 transition-all duration-200 text-left ${
+                  userType === "fintech"
+                    ? "border-cyan-500 bg-cyan-950/30"
+                    : "border-slate-700 bg-slate-800/50 hover:border-slate-600"
+                }`}
+              >
+                <h3 className="text-lg font-semibold text-white mb-2">FinTech/SaaS User</h3>
+                <p className="text-slate-400 text-sm">
+                  Software platforms paying out rewards, commissions, or vendor payments directly
+                </p>
+              </button>
+            </div>
+
+            {/* Recommendation Boxes */}
+            {userType === "marketplace" && (
+              <div className="mt-4 bg-gradient-to-br from-blue-950/40 to-cyan-950/40 border border-blue-500/30 rounded-xl p-6 animate-in fade-in slide-in-from-top-2 duration-300">
+                <h4 className="text-lg font-semibold text-white mb-2">Recommended: Connect</h4>
+                <p className="text-slate-300 text-sm mb-4">
+                  Connect is the recommended integration for marketplace platforms. It allows you to stay out of the flow of funds while your users transact directly.
+                </p>
+                <button
+                  onClick={handleConnectRecommendation}
+                  className="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                  View Connect Details
+                </button>
+              </div>
+            )}
+
+            {userType === "fintech" && (
+              <div className="mt-4 bg-gradient-to-br from-cyan-950/40 to-teal-950/40 border border-cyan-500/30 rounded-xl p-6 animate-in fade-in slide-in-from-top-2 duration-300">
+                <h4 className="text-lg font-semibold text-white mb-2">Recommended: Global Payouts</h4>
+                <p className="text-slate-300 text-sm mb-4">
+                  Global Payouts is the recommended integration for FinTech/SaaS platforms. Send funds directly to users in 90+ countries with local currency support.
+                </p>
+                <button
+                  onClick={handleGlobalPayoutsRecommendation}
+                  className="px-6 py-2 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                  View Global Payouts Details
+                </button>
+              </div>
+            )}
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-700"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-slate-950 text-slate-400">or answer questions for a personalized recommendation</span>
+              </div>
+            </div>
+          </div>
+
           {/* Progress Bar */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
