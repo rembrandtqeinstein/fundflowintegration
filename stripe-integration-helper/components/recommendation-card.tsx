@@ -72,6 +72,22 @@ const CONNECT_SUPPORTED_REGIONS = [
   "Canada", "Switzerland"
 ]
 
+// Connect USDC Payouts - Coming Q1-Q2 2026
+const CONNECT_ROADMAP_COUNTRIES = [
+  "Andorra", "Angola", "Anguilla", "Antigua and Barbuda", "Argentina", "Armenia", "Azerbaijan",
+  "Bahamas", "Bahrain", "Belize", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina",
+  "Botswana", "Brunei", "Cabo Verde", "Chile", "Colombia", "Comoros", "Cook Islands", "Costa Rica",
+  "Djibouti", "Dominica", "Dominican Republic", "East Timor (Timor-Leste)", "Ecuador",
+  "Equatorial Guinea", "Eswatini", "Fiji", "Gabon", "Gambia", "Guatemala", "Guernsey", "Guinea",
+  "Guyana", "Honduras", "Isle of Man", "Jersey", "Kazakhstan", "Kiribati", "Kyrgyzstan", "Lesotho",
+  "Liberia", "Madagascar", "Malawi", "Maldives", "Marshall Islands", "Mauritania", "Mauritius",
+  "Micronesia", "Mongolia", "Montenegro", "Montserrat", "Nauru", "Oman", "Palau", "Pakistan",
+  "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Qatar", "Saint Kitts and Nevis",
+  "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe",
+  "Saudi Arabia", "Serbia", "Seychelles", "Sierra Leone", "Solomon Islands", "Sri Lanka", "Suriname",
+  "Tajikistan", "Togo", "Tonga", "Turkmenistan", "Tuvalu", "Uruguay", "Vatican City (Holy See)", "Zambia"
+]
+
 // Region to country mappings
 const REGION_COUNTRIES: Record<string, string[]> = {
   "EMEA": [
@@ -267,12 +283,21 @@ function getFundFlowSupport(
     const canSendFrom = CONNECT_SUPPORTED_REGIONS.includes(sourceCountry)
 
     if (!canSendFrom) {
+      // When source country is not supported, categorize all destinations
+      for (const dest of expandedDestinations) {
+        if (dest === "Other") continue
+        if (CONNECT_ROADMAP_COUNTRIES.includes(dest)) {
+          comingSoonDestinations.push({ country: dest, launchDate: "Q1-Q2 2026" })
+        } else {
+          unsupportedDestinations.push(dest)
+        }
+      }
       return {
         status: "not-supported",
         message: `Cannot send Connect payouts from ${sourceCountry}`,
         supportedDestinations: [],
-        comingSoonDestinations: [],
-        unsupportedDestinations: expandedDestinations,
+        comingSoonDestinations,
+        unsupportedDestinations,
         details: `Connect cross-border payouts require the platform to be in US, UK, EEA, Canada, or Switzerland.`
       }
     }
@@ -281,6 +306,8 @@ function getFundFlowSupport(
       if (dest === "Other") continue
       if (CONNECT_SUPPORTED_REGIONS.includes(dest)) {
         supportedDestinations.push(dest)
+      } else if (CONNECT_ROADMAP_COUNTRIES.includes(dest)) {
+        comingSoonDestinations.push({ country: dest, launchDate: "Q1-Q2 2026" })
       } else {
         unsupportedDestinations.push(dest)
       }
