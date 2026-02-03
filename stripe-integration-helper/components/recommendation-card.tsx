@@ -18,6 +18,48 @@ const GLOBAL_PAYOUTS_RECIPIENT_COUNTRIES = [
   "Tunisia", "Turkey", "United Kingdom", "United States"
 ]
 
+// Roadmap countries - coming soon to Global Payouts
+const ROADMAP_COUNTRIES: Record<string, string> = {
+  // Coming January 26, 2026
+  "Antigua and Barbuda": "Jan 26, 2026",
+  "Bahrain": "Jan 26, 2026",
+  "Belize": "Jan 26, 2026",
+  "Cayman Islands": "Jan 26, 2026",
+  "Gambia": "Jan 26, 2026",
+  "Honduras": "Jan 26, 2026",
+  "Maldives": "Jan 26, 2026",
+  "Mozambique": "Jan 26, 2026",
+  "Nicaragua": "Jan 26, 2026",
+  "Papua New Guinea": "Jan 26, 2026",
+  "Saint Lucia": "Jan 26, 2026",
+  "Seychelles": "Jan 26, 2026",
+  "Suriname": "Jan 26, 2026",
+  "Zimbabwe": "Jan 26, 2026",
+  // Coming February 26, 2026
+  "Bhutan": "Feb 26, 2026",
+  "Cambodia": "Feb 26, 2026",
+  "Dominican Republic": "Feb 26, 2026",
+  "Equatorial Guinea": "Feb 26, 2026",
+  "Fiji": "Feb 26, 2026",
+  "Grenada": "Feb 26, 2026",
+  "Kyrgyzstan": "Feb 26, 2026",
+  "Lebanon": "Feb 26, 2026",
+  "Lesotho": "Feb 26, 2026",
+  "Malawi": "Feb 26, 2026",
+  "Sao Tome and Principe": "Feb 26, 2026",
+  "Solomon Islands": "Feb 26, 2026",
+  "Tonga": "Feb 26, 2026",
+  // Coming March 2026
+  "Angola": "Mar 2026",
+  "Cameroon": "Mar 2026",
+  "Ghana": "Mar 2026",
+  "Nigeria": "Mar 2026",
+  "Rwanda": "Mar 2026",
+  "Uganda": "Mar 2026",
+  // Coming April 2026
+  "Japan": "Apr 2026"
+}
+
 // Global Payouts sender countries (where platform must be based)
 const GLOBAL_PAYOUTS_SENDER_COUNTRIES = ["United States", "United Kingdom"]
 
@@ -168,6 +210,7 @@ function getFundFlowSupport(
   status: "fully-supported" | "partially-supported" | "not-supported" | "unknown"
   message: string
   supportedDestinations: string[]
+  comingSoonDestinations: Array<{ country: string; launchDate: string }>
   unsupportedDestinations: string[]
   details?: string
 } {
@@ -176,6 +219,7 @@ function getFundFlowSupport(
       status: "unknown",
       message: "Fund flow support cannot be determined",
       supportedDestinations: [],
+      comingSoonDestinations: [],
       unsupportedDestinations: [],
       details: "Please select both a source location and at least one destination to check fund flow support."
     }
@@ -183,17 +227,28 @@ function getFundFlowSupport(
 
   const expandedDestinations = expandDestinations(destinations)
   const supportedDestinations: string[] = []
+  const comingSoonDestinations: Array<{ country: string; launchDate: string }> = []
   const unsupportedDestinations: string[] = []
 
   if (integrationType === "global-payouts") {
     const canSendFrom = GLOBAL_PAYOUTS_SENDER_COUNTRIES.includes(sourceCountry)
 
     if (!canSendFrom) {
+      // When source country is not supported, categorize all destinations
+      for (const dest of expandedDestinations) {
+        if (dest === "Other") continue
+        if (ROADMAP_COUNTRIES[dest]) {
+          comingSoonDestinations.push({ country: dest, launchDate: ROADMAP_COUNTRIES[dest] })
+        } else {
+          unsupportedDestinations.push(dest)
+        }
+      }
       return {
         status: "not-supported",
         message: `Cannot send Global Payouts from ${sourceCountry}`,
         supportedDestinations: [],
-        unsupportedDestinations: expandedDestinations,
+        comingSoonDestinations,
+        unsupportedDestinations,
         details: `Global Payouts can only be sent from US or UK. ${sourceCountry} is not a supported sender country.`
       }
     }
@@ -202,6 +257,8 @@ function getFundFlowSupport(
       if (dest === "Other") continue
       if (GLOBAL_PAYOUTS_RECIPIENT_COUNTRIES.includes(dest)) {
         supportedDestinations.push(dest)
+      } else if (ROADMAP_COUNTRIES[dest]) {
+        comingSoonDestinations.push({ country: dest, launchDate: ROADMAP_COUNTRIES[dest] })
       } else {
         unsupportedDestinations.push(dest)
       }
@@ -214,6 +271,7 @@ function getFundFlowSupport(
         status: "not-supported",
         message: `Cannot send Connect payouts from ${sourceCountry}`,
         supportedDestinations: [],
+        comingSoonDestinations: [],
         unsupportedDestinations: expandedDestinations,
         details: `Connect cross-border payouts require the platform to be in US, UK, EEA, Canada, or Switzerland.`
       }
@@ -232,40 +290,49 @@ function getFundFlowSupport(
       status: "unknown",
       message: "Fund flow support unknown",
       supportedDestinations: [],
+      comingSoonDestinations: [],
       unsupportedDestinations: [],
       details: "Integration type not specified."
     }
   }
 
-  if (unsupportedDestinations.length === 0) {
+  const totalDestinations = supportedDestinations.length + comingSoonDestinations.length + unsupportedDestinations.length
+
+  if (unsupportedDestinations.length === 0 && comingSoonDestinations.length === 0) {
     return {
       status: "fully-supported",
       message: `All ${supportedDestinations.length} destination(s) are supported`,
       supportedDestinations,
+      comingSoonDestinations,
       unsupportedDestinations,
       details: `Fund flows from ${sourceCountry} to all selected destinations are supported.`
     }
-  } else if (supportedDestinations.length === 0) {
+  } else if (supportedDestinations.length === 0 && comingSoonDestinations.length === 0) {
     return {
       status: "not-supported",
       message: "No selected destinations are supported",
       supportedDestinations,
+      comingSoonDestinations,
       unsupportedDestinations,
       details: `None of the selected destinations can receive payouts from ${sourceCountry} with this integration.`
     }
   } else {
     return {
       status: "partially-supported",
-      message: `${supportedDestinations.length} of ${expandedDestinations.length} destination(s) supported`,
+      message: `${supportedDestinations.length} of ${totalDestinations} destination(s) supported`,
       supportedDestinations,
+      comingSoonDestinations,
       unsupportedDestinations,
-      details: `Some destinations are not supported for payouts from ${sourceCountry}.`
+      details: comingSoonDestinations.length > 0
+        ? `Some destinations are coming soon, and some are not yet supported for payouts from ${sourceCountry}.`
+        : `Some destinations are not supported for payouts from ${sourceCountry}.`
     }
   }
 }
 
 export default function RecommendationCard({ recommendation, onRestart, answers }: RecommendationCardProps) {
   const [showAllSupported, setShowAllSupported] = useState(false)
+  const [showAllComingSoon, setShowAllComingSoon] = useState(false)
   const [showAllUnsupported, setShowAllUnsupported] = useState(false)
 
   const booleanAnswers = [
@@ -354,7 +421,7 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
                     </div>
                   </div>
 
-                  {(fundFlowSupport.supportedDestinations.length > 0 || fundFlowSupport.unsupportedDestinations.length > 0) && (
+                  {(fundFlowSupport.supportedDestinations.length > 0 || fundFlowSupport.comingSoonDestinations.length > 0 || fundFlowSupport.unsupportedDestinations.length > 0) && (
                     <div className="mt-4 grid sm:grid-cols-2 gap-3">
                       {fundFlowSupport.supportedDestinations.length > 0 && (
                         <div className="bg-green-950/30 border border-green-800/50 rounded-lg p-3">
@@ -395,6 +462,56 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
                             <button
                               onClick={() => setShowAllSupported(false)}
                               className="mt-2 text-xs text-green-400 hover:text-green-300 underline underline-offset-2"
+                            >
+                              Show less
+                            </button>
+                          )}
+                        </div>
+                      )}
+                      {fundFlowSupport.comingSoonDestinations.length > 0 && (
+                        <div className="bg-amber-950/30 border border-amber-800/50 rounded-lg p-3">
+                          <button
+                            onClick={() => setShowAllComingSoon(!showAllComingSoon)}
+                            className="w-full flex items-center justify-between mb-2"
+                          >
+                            <h4 className="text-xs font-semibold text-amber-400 uppercase tracking-wider">
+                              Coming Soon ({fundFlowSupport.comingSoonDestinations.length})
+                            </h4>
+                            {fundFlowSupport.comingSoonDestinations.length > 10 && (
+                              showAllComingSoon ? (
+                                <ChevronUp className="w-4 h-4 text-amber-400" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4 text-amber-400" />
+                              )
+                            )}
+                          </button>
+                          <div className="flex flex-wrap gap-1">
+                            {(showAllComingSoon
+                              ? fundFlowSupport.comingSoonDestinations
+                              : fundFlowSupport.comingSoonDestinations.slice(0, 10)
+                            ).map((item) => (
+                              <span
+                                key={item.country}
+                                className="text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 rounded flex items-center gap-1"
+                                title={`Available ${item.launchDate}`}
+                              >
+                                {item.country}
+                                <span className="text-amber-500 text-[10px]">({item.launchDate})</span>
+                              </span>
+                            ))}
+                            {!showAllComingSoon && fundFlowSupport.comingSoonDestinations.length > 10 && (
+                              <button
+                                onClick={() => setShowAllComingSoon(true)}
+                                className="text-xs text-amber-400 hover:text-amber-300 underline underline-offset-2"
+                              >
+                                +{fundFlowSupport.comingSoonDestinations.length - 10} more
+                              </button>
+                            )}
+                          </div>
+                          {showAllComingSoon && fundFlowSupport.comingSoonDestinations.length > 10 && (
+                            <button
+                              onClick={() => setShowAllComingSoon(false)}
+                              className="mt-2 text-xs text-amber-400 hover:text-amber-300 underline underline-offset-2"
                             >
                               Show less
                             </button>
