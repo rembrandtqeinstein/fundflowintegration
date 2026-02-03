@@ -97,6 +97,48 @@ const GLOBAL_PAYOUTS_COUNTRIES = [
   { country: "Turkey", currency: "TRY", crossBorderFee: "0.75%" },
   { country: "United Kingdom", currency: "GBP", crossBorderFee: "0.25%" },
   { country: "United States", currency: "USD", crossBorderFee: "0.25%" },
+
+  // Coming January 26, 2026
+  { country: "Antigua and Barbuda", currency: "XCD", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "Bahrain", currency: "BHD", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "Gambia", currency: "GMD", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "Hong Kong", currency: "HKD", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "Madagascar", currency: "MGA", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "Malaysia", currency: "MYR", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "Monaco", currency: "EUR", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "Qatar", currency: "QAR", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "Rwanda", currency: "RWF", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "Saint Lucia", currency: "XCD", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "Thailand", currency: "THB", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "Trinidad and Tobago", currency: "TTD", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "United Arab Emirates", currency: "AED", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+  { country: "Vietnam", currency: "VND", crossBorderFee: "TBD", launchDate: "Jan 26, 2026" },
+
+  // Coming February 26, 2026
+  { country: "Bhutan", currency: "BTN", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+  { country: "Cambodia", currency: "KHR", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+  { country: "Costa Rica", currency: "CRC", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+  { country: "Dominican Republic", currency: "DOP", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+  { country: "Guatemala", currency: "GTQ", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+  { country: "Macau", currency: "MOP", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+  { country: "Moldova", currency: "MDL", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+  { country: "Mozambique", currency: "MZN", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+  { country: "North Macedonia", currency: "MKD", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+  { country: "Pakistan", currency: "PKR", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+  { country: "Peru", currency: "PEN", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+  { country: "Taiwan", currency: "TWD", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+  { country: "Uzbekistan", currency: "UZS", crossBorderFee: "TBD", launchDate: "Feb 26, 2026" },
+
+  // Coming March 2026
+  { country: "Angola", currency: "AOA", crossBorderFee: "TBD", launchDate: "Mar 2026" },
+  { country: "Azerbaijan", currency: "AZN", crossBorderFee: "TBD", launchDate: "Mar 2026" },
+  { country: "Gabon", currency: "XAF", crossBorderFee: "TBD", launchDate: "Mar 2026" },
+  { country: "Kazakhstan", currency: "KZT", crossBorderFee: "TBD", launchDate: "Mar 2026" },
+  { country: "Niger", currency: "XOF", crossBorderFee: "TBD", launchDate: "Mar 2026" },
+  { country: "San Marino", currency: "EUR", crossBorderFee: "TBD", launchDate: "Mar 2026" },
+
+  // Coming April 2026
+  { country: "Japan", currency: "JPY", crossBorderFee: "TBD", launchDate: "Apr 2026" },
 ]
 
 const CONNECT_REGIONS = [
@@ -218,7 +260,7 @@ export default function IntegrationDetails({ type }: IntegrationDetailsProps) {
               <Globe className="w-5 h-5 text-cyan-400" />
               <div>
                 <h4 className="font-semibold text-white">Supported Countries</h4>
-                <p className="text-sm text-slate-400">58 countries with local currency payouts</p>
+                <p className="text-sm text-slate-400">92 countries with local currency payouts (58 live, 34 coming soon)</p>
               </div>
             </div>
             {showCountries ? (
@@ -241,6 +283,7 @@ export default function IntegrationDetails({ type }: IntegrationDetailsProps) {
                       <th className="text-left py-2 px-3 text-slate-300 font-semibold">Country</th>
                       <th className="text-left py-2 px-3 text-slate-300 font-semibold">Currency</th>
                       <th className="text-left py-2 px-3 text-slate-300 font-semibold">Cross-Border Fee</th>
+                      <th className="text-left py-2 px-3 text-slate-300 font-semibold">Launch Date</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-700/50">
@@ -249,6 +292,15 @@ export default function IntegrationDetails({ type }: IntegrationDetailsProps) {
                         <td className="py-2 px-3 text-slate-300">{item.country}</td>
                         <td className="py-2 px-3 text-slate-400 font-mono text-xs">{item.currency}</td>
                         <td className="py-2 px-3 text-slate-400">{item.crossBorderFee}</td>
+                        <td className="py-2 px-3 text-slate-400">
+                          {item.launchDate ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-900/30 border border-purple-700/50 text-purple-300 text-xs rounded">
+                              {item.launchDate}
+                            </span>
+                          ) : (
+                            <span className="text-green-400">✓ Available</span>
+                          )}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
