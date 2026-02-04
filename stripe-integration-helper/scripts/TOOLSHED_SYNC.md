@@ -31,9 +31,17 @@ Claude will:
 - Uses: `mcp__toolshed__get_google_drive_file` tool
 - Contains: Roadmap countries with launch dates
 
-**Compass Projects (if needed):**
-- Uses: `mcp__toolshed__execute_internal_search` tool
-- Can search for: Product launch dates, feature timelines
+**Compass Projects:**
+- Uses: `mcp__toolshed__execute_internal_search` and `mcp__toolshed__fetch_internal_search_result` tools
+- Project 1: [Cross-border transfers (US <> UK <> EEA <> CA)](https://home.corp.stripe.com/compass/projects/crossborder-transfers-us-uk-eea-ca)
+  - Contains: Connect Cross Border Transfers launch timeline (2025 GA)
+  - Project ID: `project_S0xmk1G3XOS0TF`
+- Project 2: [GA Global payouts to crypto wallets](https://home.corp.stripe.com/compass/projects/code-yellow-global-payouts-to-crypto-wallets)
+  - Contains: Global Payouts USDC launch dates (May 2025 Sessions launch)
+  - Project ID: `project_SrXJRd3qQZYLnx`
+- Project 3: [Connect on Stablecoins](https://home.corp.stripe.com/compass/projects/connect-stablecoins-for-marketplaces)
+  - Contains: Connect Stablecoins for Marketplaces timeline (2025-2026)
+  - Project ID: `project_TTwR4WYRCy37Wa`
 
 **Trailhead Docs (if needed):**
 - Uses: `mcp__toolshed__get_trailhead_doc` tool
