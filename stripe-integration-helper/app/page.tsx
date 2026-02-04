@@ -517,10 +517,10 @@ export default function Home() {
         <div className="space-y-8">
           {/* Quick User Type Selection */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-white text-center">Not sure where to start?</h2>
+            <h2 className="text-xl font-semibold text-white text-center">Quick Recommendation</h2>
             <p className="text-slate-400 text-center text-sm">Select your business type for a quick recommendation</p>
             <div className="grid sm:grid-cols-2 gap-4">
-              {/* Marketplace User */}
+              {/* Marketplace */}
               <button
                 onClick={() => setUserType(userType === "marketplace" ? null : "marketplace")}
                 className={`relative p-6 rounded-xl border-2 transition-all duration-200 text-left ${
@@ -529,13 +529,13 @@ export default function Home() {
                     : "border-slate-700 bg-slate-800/50 hover:border-slate-600"
                 }`}
               >
-                <h3 className="text-lg font-semibold text-white mb-2">Marketplace User</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">Marketplace</h3>
                 <p className="text-slate-400 text-sm">
-                  Multi-party platforms connecting buyers and sellers, service providers, or creators
+                  Multi-party platforms connecting buyers and sellers, service providers, or creators, where marketplace does not own the funds
                 </p>
               </button>
 
-              {/* FinTech/SaaS User */}
+              {/* FinTech/SaaS */}
               <button
                 onClick={() => setUserType(userType === "fintech" ? null : "fintech")}
                 className={`relative p-6 rounded-xl border-2 transition-all duration-200 text-left ${
@@ -544,9 +544,9 @@ export default function Home() {
                     : "border-slate-700 bg-slate-800/50 hover:border-slate-600"
                 }`}
               >
-                <h3 className="text-lg font-semibold text-white mb-2">FinTech/SaaS User</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">FinTech/SaaS</h3>
                 <p className="text-slate-400 text-sm">
-                  Software platforms paying out rewards, commissions, or vendor payments directly
+                  Users paying out rewards, commissions, vendors, remittances or doing revenue-share, using their own funds (or licensed)
                 </p>
               </button>
             </div>
