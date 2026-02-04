@@ -16,28 +16,42 @@ The `sync-data.js` script runs automatically on the 1st of every month via GitHu
 
 ### Data Sources
 
-The script can fetch from:
-- Stripe's public documentation pages
-- Google Sheets (if publicly accessible as CSV export)
-- Any public API endpoints
+✅ **Configured and actively fetching from:**
 
-### Customization Required
+1. **Google Sheets** - Global Payouts roadmap data
+   - URL: `https://docs.google.com/spreadsheets/d/1w7XrLsYUBDIjig2NKNYLnVA1fozxwnA54z_3g4NZWT4/export?format=csv&gid=0`
+   - Fetches country names and launch dates from CSV
 
-⚠️ **The script is currently a template and needs customization:**
+2. **Stripe Documentation Pages:**
+   - Global Payouts countries: `https://docs.stripe.com/global-payouts/send-money`
+   - Global Payouts pricing: `https://docs.stripe.com/global-payouts/pricing`
+   - Stablecoin Financial Accounts: `https://docs.stripe.com/financial-accounts/stablecoins`
+   - Legacy Stablecoin Payouts: `https://docs.stripe.com/connect/stablecoin-payouts`
+   - Issuing Stablecoins: `https://docs.stripe.com/issuing/stablecoins-connect`
 
-1. **Add Google Sheets URL** (if using):
-   ```javascript
-   GOOGLE_SHEETS_CSV: 'https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/export?format=csv&gid=YOUR_GID'
-   ```
+### Current Status
 
-2. **Implement Stripe docs scraping** or find a public API:
-   - Option A: Parse HTML from docs.stripe.com pages
-   - Option B: Find if Stripe has a public API for country availability
-   - Option C: Use another structured data source
+✅ **Implemented:**
+- Fetching from all configured data sources
+- CSV parsing for Google Sheets roadmap data
+- Error handling and logging
+- Data availability checks
 
-3. **Implement data parsing logic**:
-   - Parse fetched data into the required format
-   - Update the country arrays in the TypeScript files
+⚠️ **Needs Implementation:**
+
+1. **HTML Parsing for Stripe Docs:**
+   - Raw HTML is fetched but needs parsing to extract structured data
+   - Consider adding a library like `cheerio` or `jsdom`
+   - Extract country lists, pricing tables, and feature information
+
+2. **File Update Logic:**
+   - Currently logs what would be updated
+   - Needs implementation to actually modify TypeScript files
+   - Must preserve formatting and type safety
+
+3. **CSV Column Mapping:**
+   - Update `fetchGoogleSheetsData()` if CSV structure changes
+   - Current mapping: Column B = date, Column D = country
 
 ### Manual Testing
 
