@@ -11,8 +11,8 @@ const path = require('path');
 
 // Configuration
 const DATA_SOURCES = {
-  // Google Sheets - Replace GID with actual sheet GID
-  GOOGLE_SHEETS_GLOBAL_PAYOUTS: 'https://docs.google.com/spreadsheets/d/1w7XrLsYUBDIjig2NKNYLnVA1fozxwnA54z_3g4NZWT4/export?format=csv&gid=0',
+  // Google Sheets - Global Payouts roadmap data
+  GOOGLE_SHEETS_GLOBAL_PAYOUTS: 'https://docs.google.com/spreadsheets/d/1w7XrLsYUBDIjig2NKNYLnVA1fozxwnA54z_3g4NZWT4/export?format=csv&gid=99819799',
 
   // Stripe Documentation URLs
   GLOBAL_PAYOUTS_COUNTRIES: 'https://docs.stripe.com/global-payouts/send-money',
@@ -140,38 +140,58 @@ function updateIntegrationDetails(data) {
 
   try {
     const filePath = FILES_TO_UPDATE.INTEGRATION_DETAILS;
-    const content = fs.readFileSync(filePath, 'utf8');
+    let content = fs.readFileSync(filePath, 'utf8');
 
-    // Log what data we have available
-    if (data.roadmapCountries && data.roadmapCountries.length > 0) {
-      console.log(`   → ${data.roadmapCountries.length} roadmap countries available`);
-      console.log('   ℹ️  To enable updates, implement array replacement logic');
+    if (!data.roadmapCountries || data.roadmapCountries.length === 0) {
+      console.log('   ⚠️  No roadmap countries data available to update');
+      return false;
     }
 
-    if (data.globalPayoutsCountries) {
-      console.log('   → Global Payouts HTML fetched (needs parsing)');
+    console.log(`   → Processing ${data.roadmapCountries.length} roadmap countries`);
+
+    // Group countries by launch date
+    const byDate = {};
+    data.roadmapCountries.forEach(item => {
+      if (!byDate[item.launchDate]) {
+        byDate[item.launchDate] = [];
+      }
+      byDate[item.launchDate].push(item.country);
+    });
+
+    // Generate the roadmap countries section for GLOBAL_PAYOUTS_COUNTRIES array
+    let roadmapSection = '\n';
+    Object.entries(byDate).sort().forEach(([date, countries]) => {
+      roadmapSection += `  // Coming ${date}\n`;
+      countries.forEach(country => {
+        // Format: { country: "Name", currency: "CODE", crossBorderFee: "TBD", launchDate: "Date" },
+        roadmapSection += `  { country: "${country}", currency: "TBD", crossBorderFee: "TBD", launchDate: "${date}" },\n`;
+      });
+      roadmapSection += '\n';
+    });
+
+    // Find and replace the roadmap section in GLOBAL_PAYOUTS_COUNTRIES
+    // Look for the pattern starting with "// Coming" until the closing bracket
+    const regex = /(const GLOBAL_PAYOUTS_COUNTRIES = \[[^\]]*?)(\n\s*\/\/ Coming[^\]]*?)(\])/s;
+
+    if (regex.test(content)) {
+      // Extract the live countries (before "// Coming")
+      const match = content.match(/(const GLOBAL_PAYOUTS_COUNTRIES = \[[^\]]*?)(\n\s*\/\/ Coming[^\]]*?)(\])/s);
+      if (match) {
+        const beforeRoadmap = match[1];
+        const afterArray = match[3];
+
+        // Replace with new roadmap data
+        content = content.replace(regex, `${beforeRoadmap}${roadmapSection}${afterArray}`);
+
+        fs.writeFileSync(filePath, content, 'utf8');
+        console.log(`   ✓ Updated roadmap countries in GLOBAL_PAYOUTS_COUNTRIES array`);
+        console.log(`   → Added ${data.roadmapCountries.length} countries across ${Object.keys(byDate).length} launch dates`);
+        return true;
+      }
     }
 
-    if (data.pricing) {
-      console.log('   → Pricing HTML fetched (needs parsing)');
-    }
-
-    // TODO: Implement logic to update the country arrays
-    // Example approach:
-    // 1. Find the GLOBAL_PAYOUTS_COUNTRIES array with regex
-    // 2. Parse existing structure to understand format
-    // 3. Generate new array with same format
-    // 4. Replace old array with new one
-    // 5. Preserve TypeScript types and formatting
-
-    console.log('   ⚠️  File read successfully but updates not implemented yet');
-    console.log('   → To enable: implement array replacement in updateIntegrationDetails()');
-
-    // When ready to update, uncomment:
-    // fs.writeFileSync(filePath, updatedContent, 'utf8');
-    // console.log('   ✓ File updated successfully');
-
-    return false; // Return true when actually updating
+    console.log('   ⚠️  Could not find roadmap section to update in file');
+    return false;
   } catch (error) {
     console.error('❌ Error updating integration-details.tsx:', error.message);
     return false;
@@ -179,49 +199,57 @@ function updateIntegrationDetails(data) {
 }
 
 /**
- * Update recommendation-card.tsx with new roadmap data
+ * Update recommendation-card.tsx with new roadmap data (coming soon countries only)
  */
 function updateRecommendationCard(data) {
   console.log('📝 Updating recommendation-card.tsx...');
 
   try {
     const filePath = FILES_TO_UPDATE.RECOMMENDATION_CARD;
-    const content = fs.readFileSync(filePath, 'utf8');
+    let content = fs.readFileSync(filePath, 'utf8');
 
-    // Log what data we have available
-    if (data.roadmapCountries && data.roadmapCountries.length > 0) {
-      console.log(`   → ${data.roadmapCountries.length} roadmap countries available`);
-
-      // Example of what we could do:
-      // Group by launch date
-      const byDate = {};
-      data.roadmapCountries.forEach(item => {
-        if (!byDate[item.launchDate]) byDate[item.launchDate] = [];
-        byDate[item.launchDate].push(item.country);
-      });
-
-      console.log('   → Grouped by launch date:');
-      Object.entries(byDate).forEach(([date, countries]) => {
-        console.log(`      ${date}: ${countries.length} countries`);
-      });
+    if (!data.roadmapCountries || data.roadmapCountries.length === 0) {
+      console.log('   ⚠️  No roadmap countries data available to update');
+      return false;
     }
 
-    // TODO: Implement logic to update the roadmap objects
-    // Example approach:
-    // 1. Find ROADMAP_COUNTRIES const with regex
-    // 2. Parse the TypeScript Record<string, string> structure
-    // 3. Generate new object with same format
-    // 4. Replace old object with new one
-    // 5. Do the same for CONNECT_ROADMAP_COUNTRIES if needed
+    console.log(`   → Processing ${data.roadmapCountries.length} roadmap countries from Google Sheets`);
 
-    console.log('   ⚠️  File read successfully but updates not implemented yet');
-    console.log('   → To enable: implement object replacement in updateRecommendationCard()');
+    // Create the ROADMAP_COUNTRIES Record object (coming soon only)
+    let roadmapObject = 'const ROADMAP_COUNTRIES: Record<string, string> = {\n';
 
-    // When ready to update, uncomment:
-    // fs.writeFileSync(filePath, updatedContent, 'utf8');
-    // console.log('   ✓ File updated successfully');
+    // Group by launch date for better organization
+    const byDate = {};
+    data.roadmapCountries.forEach(item => {
+      if (!byDate[item.launchDate]) {
+        byDate[item.launchDate] = [];
+      }
+      byDate[item.launchDate].push(item.country);
+    });
 
-    return false; // Return true when actually updating
+    // Generate the object entries grouped by date
+    Object.entries(byDate).sort().forEach(([date, countries]) => {
+      roadmapObject += `  // Coming ${date}\n`;
+      countries.sort().forEach(country => {
+        roadmapObject += `  "${country}": "${date}",\n`;
+      });
+    });
+
+    roadmapObject += '}';
+
+    // Find and replace ROADMAP_COUNTRIES (Global Payouts coming soon)
+    const regex = /const ROADMAP_COUNTRIES: Record<string, string> = \{[^}]*\}/s;
+
+    if (regex.test(content)) {
+      content = content.replace(regex, roadmapObject);
+      fs.writeFileSync(filePath, content, 'utf8');
+      console.log(`   ✓ Updated ROADMAP_COUNTRIES with ${data.roadmapCountries.length} coming soon countries`);
+      console.log(`   → Organized across ${Object.keys(byDate).length} launch dates`);
+      return true;
+    }
+
+    console.log('   ⚠️  Could not find ROADMAP_COUNTRIES to update in file');
+    return false;
   } catch (error) {
     console.error('❌ Error updating recommendation-card.tsx:', error.message);
     return false;
@@ -230,9 +258,16 @@ function updateRecommendationCard(data) {
 
 /**
  * Main sync function
+ *
+ * Data Source Priority:
+ * - Stripe Docs (public URLs) = Source of truth for LIVE/current countries
+ * - Google Sheets = Source for upcoming/coming soon roadmap countries only
  */
 async function syncData() {
   console.log('🚀 Starting data sync...\n');
+  console.log('📋 Data Source Strategy:');
+  console.log('   • Stripe Docs → Live/current country data (manual verification recommended)');
+  console.log('   • Google Sheets → Roadmap/coming soon countries (auto-updated)\n');
 
   // Fetch data from all sources
   const [stripeData, sheetsData] = await Promise.all([
@@ -246,13 +281,29 @@ async function syncData() {
     process.exit(0);
   }
 
-  // Combine data
+  // Log Stripe docs availability (for manual review)
+  if (stripeData) {
+    console.log('📄 Stripe Documentation Fetched:');
+    if (stripeData.globalPayoutsCountries) {
+      console.log('   ✓ Global Payouts countries page (review manually for live data)');
+      console.log(`     URL: ${DATA_SOURCES.GLOBAL_PAYOUTS_COUNTRIES}`);
+    }
+    if (stripeData.pricing) {
+      console.log('   ✓ Pricing information page (review manually for current fees)');
+      console.log(`     URL: ${DATA_SOURCES.GLOBAL_PAYOUTS_PRICING}`);
+    }
+    if (stripeData.stablecoinInfo) {
+      console.log('   ✓ Stablecoin documentation pages');
+    }
+    console.log('');
+  }
+
+  // Use Google Sheets data for roadmap updates
   const combinedData = {
-    ...stripeData,
     ...sheetsData,
   };
 
-  // Update files
+  // Update files (only roadmap data from Google Sheets)
   const results = [
     updateIntegrationDetails(combinedData),
     updateRecommendationCard(combinedData),
@@ -263,9 +314,11 @@ async function syncData() {
 
   if (success) {
     console.log('\n✅ Data sync completed successfully!');
-    console.log('   Files have been updated with latest data.');
+    console.log('   Roadmap countries updated from Google Sheets.');
+    console.log('   ⓘ  Remember to verify live countries against Stripe Docs manually.');
   } else {
     console.log('\n⚠️  Data sync completed but no files were updated.');
+    console.log('   ⓘ  This may be normal if roadmap data hasn\'t changed.');
   }
 }
 
