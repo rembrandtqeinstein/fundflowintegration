@@ -81,10 +81,63 @@ Claude will:
 
 ## Technical Details
 
-The Toolshed MCP provides these tools:
-- `mcp__toolshed__get_google_drive_file` - Read Google Docs/Sheets
+### Available Toolshed MCP Tools
+
+**Google Drive/Sheets:**
+- `mcp__toolshed__get_google_drive_file` - Read Google Docs/Sheets (returns full document)
+- ✨ `get_google_drive_public_sheet_in_spreadsheet` - **RECOMMENDED** - Fetch specific sheet as CSV
+  - Parameters: `spreadsheet_id` and `sheet_title`
+  - Returns structured CSV format (easier to parse than full document)
+  - [Documentation](https://trailhead.corp.stripe.com/docs/toolshed/tools/google_drive_public/get_google_drive_public_sheet_in_spreadsheet)
+
+**Internal Search:**
 - `mcp__toolshed__execute_internal_search` - Search Home (includes Compass)
 - `mcp__toolshed__fetch_internal_search_result` - Get full doc content
 - `mcp__toolshed__get_trailhead_doc` - Fetch Trailhead documentation
 
+**Stripe Public Docs:**
+- ✨ **Public Search API** - **RECOMMENDED** instead of web scraping
+  - Returns structured JSON for any docs.stripe.com page
+  - No HTML parsing needed (cheerio/jsdom not required)
+  - Not blocked, officially supported
+  - [Documentation](https://trailhead.corp.stripe.com/docs/search/public-search-development/public-search)
+
 Claude Code has access to all these tools and can fetch/parse/update automatically.
+
+## Advanced: Programmatic MCP Integration
+
+For **automated scheduling** without manual Claude Code sessions, you can integrate with MCP programmatically:
+
+### Using agent-srv
+
+Register your agent with MCP support:
+
+```python
+# In your agent-srv code
+class YourAgent(Agent):
+    def __init__(self, uses_mcp_tools=True):
+        super().__init__(uses_mcp_tools=True)
+
+    async def sync_data(self):
+        # Get MCP tools
+        tools = await self.dependencies.mcp_client.get_agent_usable_tools(...)
+
+        # Call Toolshed tools directly from code
+        sheet_data = await tools.get_google_drive_public_sheet_in_spreadsheet(
+            spreadsheet_id='1w7XrLsYUBDIjig2NKNYLnVA1fozxwnA54z_3g4NZWT4',
+            sheet_title='Your Sheet Name'
+        )
+
+        # Process and update files
+        # ...
+```
+
+**Benefits:**
+- ✅ Run on a schedule (cron, GitHub Actions, etc.)
+- ✅ No manual intervention needed
+- ✅ Same authenticated access to internal tools
+- ✅ Can be deployed as a service
+
+**Resources:**
+- [Integrating your agent with MCP](https://trailhead.corp.stripe.com/docs/ai-foundations/getting-started/integrating-your-agent-with-mcp)
+- [Agent-srv documentation](https://trailhead.corp.stripe.com/docs/ai-foundations/agent-srv)

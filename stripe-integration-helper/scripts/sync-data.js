@@ -2,8 +2,30 @@
 
 /**
  * Data Sync Script
- * Fetches data from public sources and updates the application files
+ * Fetches data from Stripe internal sources via Toolshed MCP
+ * and updates the application files
  * Runs monthly via GitHub Actions
+ *
+ * NOTE: This script is designed to run in a Stripe environment with
+ * access to Toolshed MCP for internal Google Drive and Compass data.
+ * For external users, it will fall back to public Stripe docs.
+ *
+ * RECOMMENDED IMPROVEMENTS:
+ * 1. Google Sheets: Use `get_google_drive_public_sheet_in_spreadsheet` tool
+ *    - Provide spreadsheet_id and sheet_title
+ *    - Returns CSV directly (no manual download needed)
+ *    - See: https://trailhead.corp.stripe.com/docs/toolshed/tools/google_drive_public/get_google_drive_public_sheet_in_spreadsheet
+ *
+ * 2. Stripe Docs: Use Public Search API instead of scraping
+ *    - Returns structured JSON (no cheerio/HTML parsing needed)
+ *    - Not blocked, officially supported
+ *    - See: https://trailhead.corp.stripe.com/docs/search/public-search-development/public-search
+ *
+ * 3. Automation: Integrate with MCP programmatically via agent-srv
+ *    - Register agent with uses_mcp_tools=True
+ *    - Call self.dependencies.mcp_client.get_agent_usable_tools(...)
+ *    - Run Toolshed tools from code on a schedule
+ *    - See: https://trailhead.corp.stripe.com/docs/ai-foundations/getting-started/integrating-your-agent-with-mcp
  */
 
 const fs = require('fs');
