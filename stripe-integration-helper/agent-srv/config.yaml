@@ -1,0 +1,60 @@
+# Fund Flow Sync Agent Configuration
+
+agent:
+  name: fund-flow-sync-agent
+  description: "Automatically syncs Fund Flow Integration Guide data from internal sources"
+  version: "1.0.0"
+
+  # Enable MCP tools access
+  uses_mcp_tools: true
+
+  # Repository configuration
+  repo_path: "/path/to/fund-flow-integrator"  # CONFIGURE THIS
+
+  # Git remotes
+  git:
+    stripe_remote: "stripe"
+    origin_remote: "origin"
+    branch_local: "main"
+    branch_stripe: "master"
+
+  # Data sources
+  sources:
+    google_sheets:
+      spreadsheet_id: "1w7XrLsYUBDIjig2NKNYLnVA1fozxwnA54z_3g4NZWT4"
+      sheet_title: "Sheet1"  # Adjust if needed
+
+    compass_projects:
+      - project_S0xmk1G3XOS0TF  # Cross-border transfers (US <> UK <> EEA <> CA)
+      - project_SrXJRd3qQZYLnx  # GA Global payouts to crypto wallets
+      - project_TTwR4WYRCy37Wa  # Connect on Stablecoins
+
+  # Files to update
+  files:
+    integration_details: "components/integration-details.tsx"
+    recommendation_card: "components/recommendation-card.tsx"
+
+# Schedule configuration
+schedule:
+  # Run monthly on the 1st at 00:00 UTC
+  cron: "0 0 1 * *"
+  timezone: "UTC"
+
+# Logging
+logging:
+  level: "INFO"
+  format: "json"
+
+# Notifications (optional)
+notifications:
+  # Slack webhook for sync status (optional)
+  slack:
+    enabled: false
+    webhook_url: ""
+    channel: "#fund-flow-updates"
+
+  # Email notifications (optional)
+  email:
+    enabled: false
+    recipients:
+      - "hernanherrera@stripe.com"

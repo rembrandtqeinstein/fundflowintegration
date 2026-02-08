@@ -1,0 +1,13 @@
+# Fund Flow Sync Agent Requirements
+
+# Agent-srv framework (internal Stripe package)
+# Install via: pip install agent-srv
+
+# Standard library dependencies (included in Python 3.8+)
+# - asyncio
+# - re
+# - subprocess
+# - datetime
+
+# Note: MCP client is provided by agent-srv framework
+# No additional dependencies needed for basic operation
