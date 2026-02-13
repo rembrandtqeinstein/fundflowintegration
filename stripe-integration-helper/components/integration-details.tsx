@@ -910,14 +910,25 @@ export default function IntegrationDetails({ type }: IntegrationDetailsProps) {
               </p>
             </div>
 
-            <a
-              href="https://docs.stripe.com/connect/charges"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300"
-            >
-              View charge types documentation <ExternalLink className="w-3 h-3" />
-            </a>
+            <div className="space-y-2">
+              <a
+                href="https://docs.stripe.com/connect/charges"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300"
+              >
+                View charge types documentation <ExternalLink className="w-3 h-3" />
+              </a>
+              <br />
+              <a
+                href="https://admin.corp.stripe.com/horizon-outbound-flows/outbound-payments-config"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300"
+              >
+                Complete list of countries and payout methods for Connect <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
           </div>
         )}
       </div>
