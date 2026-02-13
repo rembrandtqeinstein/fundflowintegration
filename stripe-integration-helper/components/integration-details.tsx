@@ -306,14 +306,25 @@ export default function IntegrationDetails({ type }: IntegrationDetailsProps) {
                   </tbody>
                 </table>
               </div>
-              <a
-                href="https://docs.stripe.com/global-payouts/send-money"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300"
-              >
-                View full country details <ExternalLink className="w-3 h-3" />
-              </a>
+              <div className="mt-4 space-y-2">
+                <a
+                  href="https://docs.stripe.com/global-payouts/send-money"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300"
+                >
+                  View full country details <ExternalLink className="w-3 h-3" />
+                </a>
+                <br />
+                <a
+                  href="https://admin.corp.stripe.com/horizon-outbound-flows/outbound-payments-config"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300"
+                >
+                  Complete list of countries and payout methods for Global Payouts <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
             </div>
           )}
         </div>
