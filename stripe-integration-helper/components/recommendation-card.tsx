@@ -437,6 +437,19 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
                   </h3>
                   <p className="text-sm text-slate-400 mt-1">{fundFlowSupport.details}</p>
 
+                  {recommendation.integrationType === "global-payouts" && (
+                    <div className="mt-3">
+                      <a
+                        href="https://admin.corp.stripe.com/horizon-outbound-flows/outbound-payments-config"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300"
+                      >
+                        Complete list of countries and payout methods for Global Payouts <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
+                  )}
+
                   <div className="mt-3 flex flex-wrap gap-4 text-sm">
                     <div>
                       <span className="text-slate-500">From:</span>{" "}
