@@ -529,7 +529,7 @@ export default function Home() {
                     : "border-slate-700 bg-slate-800/50 hover:border-slate-600"
                 }`}
               >
-                <h3 className="text-lg font-semibold text-white mb-2">Marketplace</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">Marketplace/SaaS</h3>
                 <p className="text-slate-400 text-sm">
                   Multi-party platforms connecting buyers and sellers, service providers, or creators, where marketplace does not own the funds
                 </p>
