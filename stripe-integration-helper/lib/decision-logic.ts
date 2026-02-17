@@ -5,6 +5,7 @@ interface Recommendation {
   keyBenefits: string[]
   docsLink?: string
   integrationType?: "global-payouts" | "connect"
+  implementationNote?: string
 }
 
 export function determineBestIntegration(answers: Record<string, boolean | null>): Recommendation {
@@ -77,6 +78,7 @@ export function determineBestIntegration(answers: Record<string, boolean | null>
       ],
       docsLink: "https://docs.stripe.com/connect/cross-border-payouts",
       integrationType: "connect",
+      implementationNote: "Use Destination Charges or Separate Charges and Transfers without on_behalf_of to remain as the Merchant of Record.",
     }
   }
 

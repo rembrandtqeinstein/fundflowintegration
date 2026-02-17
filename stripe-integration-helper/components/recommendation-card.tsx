@@ -138,6 +138,7 @@ interface RecommendationCardProps {
     keyBenefits: string[]
     docsLink?: string
     integrationType?: "global-payouts" | "connect"
+    implementationNote?: string
   }
   onRestart: () => void
   answers: Record<string, boolean | string | string[] | null>
@@ -692,6 +693,19 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
                 ))}
               </ul>
             </div>
+
+            {/* Implementation Note */}
+            {recommendation.implementationNote && (
+              <div className="mt-6 p-4 bg-blue-950/40 border border-blue-500/40 rounded-lg">
+                <div className="flex items-start gap-3">
+                  <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-sm font-semibold text-blue-300 mb-1">Implementation Note</h4>
+                    <p className="text-sm text-slate-300">{recommendation.implementationNote}</p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Integration Details */}
