@@ -435,6 +435,11 @@ export default function Home() {
         newAnswers.question1 = false
       }
 
+      // Auto-set question3 to Yes when question1 is No
+      if (questionId === "question1" && value === false) {
+        newAnswers.question3 = true
+      }
+
       return newAnswers
     })
   }
@@ -471,9 +476,9 @@ export default function Home() {
       question2: true, // International payouts
       question3: true, // Stay out of flow of funds
       question4: false, // Fast integration (not required)
-      question5: false, // Not merchant of record
+      question5: true, // Merchant of record - YES
       question6: "United States",
-      question7: ["United States", "Canada"],
+      question7: ["EMEA", "APAC", "North America", "LATAM", "Africa"], // All regions
     })
     setShowRecommendation(true)
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -488,7 +493,7 @@ export default function Home() {
       question4: true, // Fast integration
       question5: true, // Merchant of record
       question6: "United States",
-      question7: ["EMEA", "APAC"],
+      question7: ["EMEA", "APAC", "North America", "LATAM", "Africa"], // All regions
     })
     setShowRecommendation(true)
     window.scrollTo({ top: 0, behavior: "smooth" })
