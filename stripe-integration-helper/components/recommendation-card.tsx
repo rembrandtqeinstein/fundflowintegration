@@ -72,7 +72,7 @@ const CONNECT_SUPPORTED_REGIONS = [
   "Canada", "Switzerland"
 ]
 
-// Connect USDC Payouts - Coming Q1-Q2 2026
+// Connect USDC Payouts - Coming Soon
 const CONNECT_ROADMAP_COUNTRIES = [
   "Andorra", "Angola", "Anguilla", "Antigua and Barbuda", "Argentina", "Armenia", "Azerbaijan",
   "Bahamas", "Bahrain", "Belize", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina",
@@ -288,7 +288,7 @@ function getFundFlowSupport(
       for (const dest of expandedDestinations) {
         if (dest === "Other") continue
         if (CONNECT_ROADMAP_COUNTRIES.includes(dest)) {
-          comingSoonDestinations.push({ country: dest, launchDate: "Q1-Q2 2026" })
+          comingSoonDestinations.push({ country: dest, launchDate: "Coming Soon" })
         } else {
           unsupportedDestinations.push(dest)
         }
@@ -308,7 +308,7 @@ function getFundFlowSupport(
       if (CONNECT_SUPPORTED_REGIONS.includes(dest)) {
         supportedDestinations.push(dest)
       } else if (CONNECT_ROADMAP_COUNTRIES.includes(dest)) {
-        comingSoonDestinations.push({ country: dest, launchDate: "Q1-Q2 2026" })
+        comingSoonDestinations.push({ country: dest, launchDate: "Coming Soon" })
       } else {
         unsupportedDestinations.push(dest)
       }

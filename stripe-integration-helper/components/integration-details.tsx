@@ -524,7 +524,7 @@ export default function IntegrationDetails({ type }: IntegrationDetailsProps) {
                 <div className="flex items-center gap-2">
                   <h4 className="font-semibold text-white">USDC Global Payouts</h4>
                   <span className="px-2 py-0.5 bg-purple-600/50 text-purple-200 text-xs font-medium rounded">
-                    May 2025
+                    May 2026
                   </span>
                 </div>
                 <p className="text-sm text-slate-400">Pay out in USDC from US / EU to global recipients</p>
@@ -947,7 +947,7 @@ export default function IntegrationDetails({ type }: IntegrationDetailsProps) {
               <div className="flex items-center gap-2">
                 <h4 className="font-semibold text-white">USDC Connect Payouts</h4>
                 <span className="px-2 py-0.5 bg-purple-600/50 text-purple-200 text-xs font-medium rounded">
-                  Q1-Q2 2026
+                  Coming Soon
                 </span>
               </div>
               <p className="text-sm text-slate-400">Pay out in USDC from US / EU platforms to global connected accounts</p>
