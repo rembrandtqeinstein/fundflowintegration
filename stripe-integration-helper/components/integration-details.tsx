@@ -246,6 +246,8 @@ export default function IntegrationDetails({ type }: IntegrationDetailsProps) {
   const [showExemptions, setShowExemptions] = useState(false)
   const [showLegacyStablecoin, setShowLegacyStablecoin] = useState(false)
   const [showUSDCConnect, setShowUSDCConnect] = useState(false)
+  const [showRemoteAcquiring, setShowRemoteAcquiring] = useState(false)
+  const [showFinancialAccountDistribution, setShowFinancialAccountDistribution] = useState(false)
 
   if (type === "global-payouts") {
     return (
@@ -1132,6 +1134,144 @@ export default function IntegrationDetails({ type }: IntegrationDetailsProps) {
                 className="inline-flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300"
               >
                 View compliant solution (Internal) <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Remote Acquiring - Coming Soon */}
+      <div className="bg-gradient-to-br from-indigo-900/30 to-violet-900/30 border border-indigo-500/30 rounded-lg overflow-hidden">
+        <button
+          onClick={() => setShowRemoteAcquiring(!showRemoteAcquiring)}
+          className="w-full flex items-center justify-between p-4 text-left hover:bg-indigo-700/10 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <Sparkles className="w-5 h-5 text-indigo-400" />
+            <div>
+              <div className="flex items-center gap-2">
+                <h4 className="font-semibold text-white">Remote Acquiring</h4>
+                <span className="px-2 py-0.5 bg-indigo-600/50 text-indigo-200 text-xs font-medium rounded">
+                  Coming Soon
+                </span>
+              </div>
+              <p className="text-sm text-slate-400">Direct charges to locations where Stripe can't acquire today</p>
+            </div>
+          </div>
+          {showRemoteAcquiring ? (
+            <ChevronUp className="w-5 h-5 text-slate-400" />
+          ) : (
+            <ChevronDown className="w-5 h-5 text-slate-400" />
+          )}
+        </button>
+        {showRemoteAcquiring && (
+          <div className="border-t border-indigo-500/30 p-4 space-y-4">
+            <div className="p-3 bg-indigo-950/30 border border-indigo-800/50 rounded-lg">
+              <p className="text-sm text-indigo-200">
+                <strong>Overview:</strong> Remote Acquiring enables platforms to process Direct Charges in countries where Stripe doesn't currently have acquiring capabilities, such as Argentina.
+              </p>
+            </div>
+
+            <div>
+              <h5 className="text-sm font-semibold text-slate-300 mb-2">Key Benefits</h5>
+              <ul className="space-y-2 text-sm text-slate-300">
+                <li className="flex items-start gap-2">
+                  <span className="text-indigo-400">•</span>
+                  <span>Expand to new markets without local acquiring infrastructure</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-indigo-400">•</span>
+                  <span>Process Direct Charges in regions like Argentina</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-indigo-400">•</span>
+                  <span>Seamless integration with existing Connect implementation</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-3 bg-blue-950/30 border border-blue-800/50 rounded-lg">
+              <p className="text-sm text-blue-200">
+                <strong>Questions?</strong> Reach out to <span className="font-mono text-cyan-300">@hernanherrera</span> on Slack for more information about Remote Acquiring.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Financial Account Distribution - Coming Soon */}
+      <div className="bg-gradient-to-br from-teal-900/30 to-emerald-900/30 border border-teal-500/30 rounded-lg overflow-hidden">
+        <button
+          onClick={() => setShowFinancialAccountDistribution(!showFinancialAccountDistribution)}
+          className="w-full flex items-center justify-between p-4 text-left hover:bg-teal-700/10 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <Coins className="w-5 h-5 text-teal-400" />
+            <div>
+              <div className="flex items-center gap-2">
+                <h4 className="font-semibold text-white">Financial Account Distribution</h4>
+                <span className="px-2 py-0.5 bg-teal-600/50 text-teal-200 text-xs font-medium rounded">
+                  Coming Soon
+                </span>
+              </div>
+              <p className="text-sm text-slate-400">Distribute Financial Accounts to Connected Accounts for money management</p>
+            </div>
+          </div>
+          {showFinancialAccountDistribution ? (
+            <ChevronUp className="w-5 h-5 text-slate-400" />
+          ) : (
+            <ChevronDown className="w-5 h-5 text-slate-400" />
+          )}
+        </button>
+        {showFinancialAccountDistribution && (
+          <div className="border-t border-teal-500/30 p-4 space-y-4">
+            <div className="p-3 bg-teal-950/30 border border-teal-800/50 rounded-lg">
+              <p className="text-sm text-teal-200">
+                <strong>Available for:</strong> EU, UK, and US Platforms
+              </p>
+              <p className="text-sm text-teal-200 mt-1">
+                <strong>Use Case:</strong> Platforms that want to offer their Connected Accounts money management capabilities
+              </p>
+            </div>
+
+            <div>
+              <h5 className="text-sm font-semibold text-slate-300 mb-2">Key Features</h5>
+              <ul className="space-y-2 text-sm text-slate-300">
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-400">•</span>
+                  <span>Enable Connected Accounts to hold and manage funds in Financial Accounts</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-400">•</span>
+                  <span>Offer money management capabilities directly to your connected users</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-400">•</span>
+                  <span>Support for EU/UK interoperability and treasury features</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-teal-400">•</span>
+                  <span>Build differentiated financial services on your platform</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a
+                href="https://home.corp.stripe.com/compass/projects/eu-uk-interoperability-for-treasury"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-teal-400 hover:text-teal-300"
+              >
+                View Compass project <ExternalLink className="w-3 h-3" />
+              </a>
+              <a
+                href="https://docs.corp.stripe.com/money-management"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-emerald-400 hover:text-emerald-300"
+              >
+                View Money Management docs <ExternalLink className="w-3 h-3" />
               </a>
             </div>
           </div>
