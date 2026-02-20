@@ -490,47 +490,6 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
     URL.revokeObjectURL(url)
   }
 
-  const ReportGenerationForm = () => (
-    <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
-      <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">Generate Report</h3>
-      <div className="grid sm:grid-cols-2 gap-4 mb-4">
-        <div>
-          <label htmlFor="userName" className="block text-sm text-slate-400 mb-2">
-            User Name (Optional)
-          </label>
-          <input
-            id="userName"
-            type="text"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            placeholder="Enter user name"
-            className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
-          />
-        </div>
-        <div>
-          <label htmlFor="accountId" className="block text-sm text-slate-400 mb-2">
-            Account ID (Optional)
-          </label>
-          <input
-            id="accountId"
-            type="text"
-            value={accountId}
-            onChange={(e) => setAccountId(e.target.value)}
-            placeholder="Enter account ID"
-            className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
-          />
-        </div>
-      </div>
-      <button
-        onClick={generateMarkdownReport}
-        className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
-      >
-        <Download className="w-5 h-5" />
-        Generate Report
-      </button>
-    </div>
-  )
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
       {/* Header */}
@@ -544,7 +503,44 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
       <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="space-y-8">
           {/* Report Generation Form - Top */}
-          <ReportGenerationForm />
+          <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+            <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">Generate Report</h3>
+            <div className="grid sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label htmlFor="userName-top" className="block text-sm text-slate-400 mb-2">
+                  User Name (Optional)
+                </label>
+                <input
+                  id="userName-top"
+                  type="text"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  placeholder="Enter user name"
+                  className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
+                />
+              </div>
+              <div>
+                <label htmlFor="accountId-top" className="block text-sm text-slate-400 mb-2">
+                  Account ID (Optional)
+                </label>
+                <input
+                  id="accountId-top"
+                  type="text"
+                  value={accountId}
+                  onChange={(e) => setAccountId(e.target.value)}
+                  placeholder="Enter account ID"
+                  className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
+                />
+              </div>
+            </div>
+            <button
+              onClick={generateMarkdownReport}
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              <Download className="w-5 h-5" />
+              Generate Report
+            </button>
+          </div>
 
           {/* Fund Flow Support Banner */}
           {merchantLocation && destinationLocations && destinationLocations.length > 0 && (
@@ -902,7 +898,44 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
           </div>
 
           {/* Report Generation Form - Bottom */}
-          <ReportGenerationForm />
+          <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+            <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">Generate Report</h3>
+            <div className="grid sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label htmlFor="userName-bottom" className="block text-sm text-slate-400 mb-2">
+                  User Name (Optional)
+                </label>
+                <input
+                  id="userName-bottom"
+                  type="text"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  placeholder="Enter user name"
+                  className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
+                />
+              </div>
+              <div>
+                <label htmlFor="accountId-bottom" className="block text-sm text-slate-400 mb-2">
+                  Account ID (Optional)
+                </label>
+                <input
+                  id="accountId-bottom"
+                  type="text"
+                  value={accountId}
+                  onChange={(e) => setAccountId(e.target.value)}
+                  placeholder="Enter account ID"
+                  className="w-full px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
+                />
+              </div>
+            </div>
+            <button
+              onClick={generateMarkdownReport}
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              <Download className="w-5 h-5" />
+              Generate Report
+            </button>
+          </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
