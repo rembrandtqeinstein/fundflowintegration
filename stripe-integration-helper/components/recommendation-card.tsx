@@ -855,6 +855,28 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
                 </div>
               </div>
             )}
+
+            {/* Connect Integration Helper Link */}
+            {recommendation.integrationType === "connect" && (
+              <div className="mt-6 p-4 bg-cyan-950/40 border border-cyan-500/40 rounded-lg">
+                <div className="flex items-start gap-3">
+                  <ExternalLink className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-sm font-semibold text-cyan-300 mb-1">Connect Integration Helper</h4>
+                    <p className="text-sm text-slate-300 mb-2">Need help building your Connect integration?</p>
+                    <a
+                      href="https://pages.stripe.me/trait-or-dare"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
+                    >
+                      Access the Connect Integration Helper
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Integration Details */}
@@ -936,6 +958,28 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
               Generate Report
             </button>
           </div>
+
+          {/* Connect Integration Helper Link - Bottom */}
+          {recommendation.integrationType === "connect" && (
+            <div className="bg-cyan-950/30 border border-cyan-500/30 rounded-lg p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <ExternalLink className="w-6 h-6 text-cyan-400 flex-shrink-0" />
+                <h3 className="text-lg font-semibold text-cyan-300">Connect Integration Helper</h3>
+              </div>
+              <p className="text-slate-300 mb-4">
+                Need guidance on building your Connect integration? Access our interactive helper tool to get started with implementation.
+              </p>
+              <a
+                href="https://pages.stripe.me/trait-or-dare"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                Access Connect Integration Helper
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+          )}
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
