@@ -60,6 +60,14 @@ const ROADMAP_COUNTRIES: Record<string, string> = {
   "Japan": "Apr 2026"
 }
 
+// EU countries (EU member states + EEA)
+const EU_COUNTRIES = [
+  "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Denmark",
+  "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Iceland", "Ireland",
+  "Italy", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Malta", "Netherlands",
+  "Norway", "Poland", "Portugal", "Romania", "Slovakia", "Slovenia", "Spain", "Sweden"
+]
+
 // Global Payouts sender countries (where platform must be based)
 const GLOBAL_PAYOUTS_SENDER_COUNTRIES = ["United States", "United Kingdom"]
 
@@ -804,6 +812,26 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
                     <p className="text-sm text-slate-400 mt-1">{marketAvailability.details}</p>
                   )}
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* EU Preview Notice for Global Payouts */}
+          {recommendation.integrationType === "global-payouts" && merchantLocation && EU_COUNTRIES.includes(merchantLocation) && (
+            <div className="rounded-xl p-4 border bg-amber-950/30 border-amber-500/30">
+              <div className="flex items-start gap-3">
+                <Info className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-amber-300">
+                  <span className="font-semibold">Preview:</span> please reach out to{" "}
+                  <a
+                    href="https://stripe.slack.com/archives/C03KK8CRJDT"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 hover:text-amber-200"
+                  >
+                    #global-payout-sales
+                  </a>
+                </p>
               </div>
             </div>
           )}
