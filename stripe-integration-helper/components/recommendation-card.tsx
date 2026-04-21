@@ -769,7 +769,7 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
           )}
 
           {/* Market Availability Banner */}
-          {merchantLocation && (
+          {merchantLocation && !(recommendation.integrationType === "global-payouts" && EU_COUNTRIES.includes(merchantLocation)) && (
             <div
               className={`rounded-xl p-4 border ${
                 marketAvailability.status === "supported"
@@ -822,7 +822,7 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
               <div className="flex items-start gap-3">
                 <Info className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-amber-300">
-                  <span className="font-semibold">Preview:</span> please reach out to{" "}
+                  <span className="font-semibold">Global Payouts is in Preview:</span> please reach out to{" "}
                   <a
                     href="https://stripe.slack.com/archives/C03KK8CRJDT"
                     target="_blank"
