@@ -510,6 +510,26 @@ export default function RecommendationCard({ recommendation, onRestart, answers 
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="space-y-8">
+          {/* EU Preview Notice for Global Payouts - Top */}
+          {recommendation.integrationType === "global-payouts" && merchantLocation && EU_COUNTRIES.includes(merchantLocation) && (
+            <div className="rounded-xl p-4 border bg-amber-950/30 border-amber-500/30">
+              <div className="flex items-start gap-3">
+                <Info className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-amber-300">
+                  <span className="font-semibold">Global Payouts is in Preview:</span> please reach out to{" "}
+                  <a
+                    href="https://stripe.slack.com/archives/C03KK8CRJDT"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 hover:text-amber-200"
+                  >
+                    #global-payout-sales
+                  </a>
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Report Generation Form - Top */}
           <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
             <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">Generate Report</h3>
