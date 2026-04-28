@@ -9,6 +9,10 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: 'Fund Flows Integration Guide',
   description: 'If you have any doubt, reach out to stripe-crypto or @hernanherrera',
+  robots: {
+    index: false,
+    follow: false,
+  },
   icons: {
     icon: [
       {
